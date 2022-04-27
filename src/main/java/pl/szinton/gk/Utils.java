@@ -1,9 +1,19 @@
 package pl.szinton.gk;
 
+import org.ejml.simple.SimpleMatrix;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Utils {
+
+    public static Vector3f normalizeVectorFromMatrix(SimpleMatrix vectorMatrix) {
+        float divider = (float) vectorMatrix.get(3, 0);
+        float x = (float) (vectorMatrix.get(0, 0) / divider);
+        float y = (float) (vectorMatrix.get(1, 0) / divider);
+        float z = (float) (vectorMatrix.get(2, 0) / divider);
+        return new Vector3f(x, y, z);
+    }
 
     public static Model3D createModel(float[][] verticesData, int[][] edgesData) {
         List<Vector3f> vertices = new ArrayList<>();

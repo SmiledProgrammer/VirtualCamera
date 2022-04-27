@@ -18,6 +18,10 @@ public class Vector3f {
         this.z = z;
     }
 
+    public Vector3f negative() {
+        return new Vector3f(-x, -y, -z);
+    }
+
     public float getX() {
         return x;
     }
