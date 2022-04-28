@@ -22,6 +22,10 @@ public class Vector3f {
         return new Vector3f(-x, -y, -z);
     }
 
+    public Vector3f add(Vector3f other) {
+        return new Vector3f(this.x + other.x, this.y + other.y, this.z + other.z);
+    }
+
     public float getX() {
         return x;
     }

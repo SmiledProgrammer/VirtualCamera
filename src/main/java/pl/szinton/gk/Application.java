@@ -20,6 +20,8 @@ public class Application extends JFrame implements KeyListener {
         this.scene = scene;
         this.setTitle("Virtual Camera");
         this.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.addKeyListener(this);
         this.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
@@ -37,20 +39,23 @@ public class Application extends JFrame implements KeyListener {
     @Override
     public void paint(Graphics g) {
         super.paint(g);
+        g.setClip(0, 0, this.getWidth(), this.getHeight());
+        g.setColor(new Color(200, 230, 255));
+        g.fillRect(0, 0, this.getWidth(), this.getHeight());
         scene.render(g, camera);
     }
 
     public static void main(String[] args) {
-        Vector3f initialPosition = new Vector3f(2f, 1f, -3f);
+        Vector3f initialPosition = new Vector3f(6f, 1f, -3f);
         Vector2i frameSize = new Vector2i(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 
         Camera3D camera = new Camera3D(frameSize, initialPosition);
 
         Scene scene = new Scene();
-        scene.addObject(Utils.createCuboidModel(new Vector3f(4f, 0f, 6f), new Vector3f(1f, 3f, 1f)));
-        scene.addObject(Utils.createCuboidModel(new Vector3f(4f, 0f, 8f), new Vector3f(1f, 5f, 1f)));
-        scene.addObject(Utils.createCuboidModel(new Vector3f(6f, 0f, 6f), new Vector3f(1f, 4f, 1f)));
-        scene.addObject(Utils.createCuboidModel(new Vector3f(6f, 0f, 8f), new Vector3f(1f, 6f, 1f)));
+        scene.addObject(Utils.createCuboidModel(new Vector3f(4f, 0f, 4f), new Vector3f(1f, 3f, 1f)));
+        scene.addObject(Utils.createCuboidModel(new Vector3f(4f, 0f, 8f), new Vector3f(1f, 2f, 1f)));
+        scene.addObject(Utils.createCuboidModel(new Vector3f(8f, 0f, 4f), new Vector3f(1f, 4f, 1f)));
+        scene.addObject(Utils.createCuboidModel(new Vector3f(8f, 0f, 8f), new Vector3f(1f, 3f, 1f)));
 
         Application app = new Application(camera, scene);
         app.run();
@@ -58,12 +63,27 @@ public class Application extends JFrame implements KeyListener {
 
     @Override
     public void keyTyped(KeyEvent e) {
-
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
-
+        this.repaint();
+        switch (e.getKeyCode()) {
+            case KeyEvent.VK_A -> camera.move(Direction.LEFT);
+            case KeyEvent.VK_D -> camera.move(Direction.RIGHT);
+            case KeyEvent.VK_W -> camera.move(Direction.FORWARD);
+            case KeyEvent.VK_S -> camera.move(Direction.BACKWARD);
+            case KeyEvent.VK_R -> camera.move(Direction.UP);
+            case KeyEvent.VK_F -> camera.move(Direction.DOWN);
+            case KeyEvent.VK_J -> camera.rotate(RotationAxis.NEGATIVE_X);
+            case KeyEvent.VK_K -> camera.rotate(RotationAxis.NEGATIVE_Y);
+            case KeyEvent.VK_L -> camera.rotate(RotationAxis.NEGATIVE_Z);
+            case KeyEvent.VK_U -> camera.rotate(RotationAxis.POSITIVE_X);
+            case KeyEvent.VK_I -> camera.rotate(RotationAxis.POSITIVE_Y);
+            case KeyEvent.VK_O -> camera.rotate(RotationAxis.POSITIVE_Z);
+            case KeyEvent.VK_C -> camera.zoom(Zoom.IN);
+            case KeyEvent.VK_V -> camera.zoom(Zoom.OUT);
+        }
     }
 
     @Override

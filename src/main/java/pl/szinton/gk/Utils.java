@@ -7,6 +7,20 @@ import java.util.List;
 
 public class Utils {
 
+    public static SimpleMatrix multiplyExtendedVectorByMatrix(Vector3f vector, SimpleMatrix matrix) {
+        SimpleMatrix vectorMatrix = new SimpleMatrix(4, 1, true, new float[]{
+                vector.getX(), vector.getY(), vector.getZ(), 1f
+        });
+        return matrix.mult(vectorMatrix);
+    }
+
+    public static Vector3f getVectorFromMatrix(SimpleMatrix vectorMatrix) {
+        float x = (float) vectorMatrix.get(0, 0);
+        float y = (float) vectorMatrix.get(1, 0);
+        float z = (float) vectorMatrix.get(2, 0);
+        return new Vector3f(x, y, z);
+    }
+
     public static Vector3f normalizeVectorFromMatrix(SimpleMatrix vectorMatrix) {
         float divider = (float) vectorMatrix.get(3, 0);
         float x = (float) (vectorMatrix.get(0, 0) / divider);
