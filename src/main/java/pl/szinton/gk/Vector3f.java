@@ -2,9 +2,9 @@ package pl.szinton.gk;
 
 public class Vector3f {
 
-    private float x;
-    private float y;
-    private float z;
+    private final float x;
+    private final float y;
+    private final float z;
 
     public Vector3f() {
         this.x = 0f;
