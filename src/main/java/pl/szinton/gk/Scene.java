@@ -16,12 +16,11 @@ public class Scene {
         objects.add(obj);
     }
 
-    public void render(Graphics g, Camera3D camera) {
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.setColor(Color.BLACK);
-        g2d.setStroke(new BasicStroke(3));
+    public void render(Graphics2D g, Camera3D camera) {
+        g.setColor(Color.BLACK);
+        g.setStroke(new BasicStroke(2));
         for (Model3D obj : objects) {
-            obj.render(g2d, camera);
+            obj.render(g, camera);
         }
     }
 }

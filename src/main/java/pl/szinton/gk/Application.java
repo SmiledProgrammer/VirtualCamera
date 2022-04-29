@@ -34,15 +34,20 @@ public class Application extends JFrame implements KeyListener {
 
     public void run() {
         this.setVisible(true);
+        this.repaint();
     }
 
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-        g.setClip(0, 0, this.getWidth(), this.getHeight());
-        g.setColor(new Color(200, 230, 255));
-        g.fillRect(0, 0, this.getWidth(), this.getHeight());
-        scene.render(g, camera);
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setClip(0, 0, this.getWidth(), this.getHeight());
+        g2d.setColor(new Color(200, 230, 255));
+        g2d.fillRect(0, 0, this.getWidth(), this.getHeight());
+        scene.render(g2d, camera);
+        g2d.setColor(Color.DARK_GRAY);
+        g2d.setFont(new Font("Dialog", Font.PLAIN, 22));
+        g2d.drawString(camera.toString(), 10, 90);
     }
 
     public static void main(String[] args) {

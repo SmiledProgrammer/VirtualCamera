@@ -14,7 +14,7 @@ public class Model3D {
         this.edges = new ArrayList<>(edges);
     }
 
-    public void render(Graphics g, Camera3D camera) {
+    public void render(Graphics2D g, Camera3D camera) {
         for (Vector2i edge : edges) {
             Vector3f point1 = vertices.get(edge.getX());
             Vector3f point2 = vertices.get(edge.getY());

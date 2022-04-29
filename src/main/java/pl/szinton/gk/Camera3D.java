@@ -5,7 +5,7 @@ import org.ejml.simple.SimpleMatrix;
 public class Camera3D {
 
     private final static float MOVE_UNIT = 1f;
-    private final static float ROTATE_UNIT = (float) (Math.PI * 0.5f);
+    private final static float ROTATE_UNIT = (float) (Math.PI * 0.1f);
     private final static float ZOOM_UNIT = 1.5f;
 
     private Vector2i frameSize;
@@ -18,15 +18,15 @@ public class Camera3D {
         this.frameSize = frameSize;
         this.position = position;
         this.rotation = new Vector3f();
-        this.zoom = 10f;
+        this.zoom = 5f;
         updateTransformationMatrix();
     }
 
     public Vector2i projectPoint(Vector3f point) {
         SimpleMatrix transformedVectorMatrix = Utils.multiplyExtendedVectorByMatrix(point, transformationMatrix);
         Vector3f transformedVector = Utils.normalizeVectorFromMatrix(transformedVectorMatrix);
-        int x = (int) (transformedVector.getX() * frameSize.getX() + frameSize.getX() / 2);
-        int y = (int) (-transformedVector.getY() * frameSize.getY() + frameSize.getY() / 2);
+        int x = (int) (transformedVector.getX() * frameSize.getX() / -transformedVector.getZ() + frameSize.getX() / 2);
+        int y = (int) (-transformedVector.getY() * frameSize.getY() / -transformedVector.getZ() + frameSize.getY() / 2);
         return new Vector2i(x, y);
     }
 
