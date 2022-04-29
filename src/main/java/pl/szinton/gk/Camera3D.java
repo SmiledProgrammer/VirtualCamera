@@ -6,7 +6,7 @@ public class Camera3D {
 
     private final static float MOVE_UNIT = 1f;
     private final static float ROTATE_UNIT = (float) (Math.PI * 0.1f);
-    private final static float ZOOM_UNIT = 1.5f;
+    private final static float ZOOM_UNIT = 0.5f;
 
     private Vector2i frameSize;
     private Vector3f position;
@@ -18,15 +18,15 @@ public class Camera3D {
         this.frameSize = frameSize;
         this.position = position;
         this.rotation = new Vector3f();
-        this.zoom = 5f;
+        this.zoom = 2f;
         updateTransformationMatrix();
     }
 
     public Vector2i projectPoint(Vector3f point) {
         SimpleMatrix transformedVectorMatrix = Utils.multiplyExtendedVectorByMatrix(point, transformationMatrix);
         Vector3f transformedVector = Utils.normalizeVectorFromMatrix(transformedVectorMatrix);
-        int x = (int) (transformedVector.getX() * frameSize.getX() / -transformedVector.getZ() + frameSize.getX() / 2);
-        int y = (int) (-transformedVector.getY() * frameSize.getY() / -transformedVector.getZ() + frameSize.getY() / 2);
+        int x = (int) (transformedVector.getX() * frameSize.getX() / transformedVector.getZ() + frameSize.getX() / 2);
+        int y = (int) (-transformedVector.getY() * frameSize.getY() / transformedVector.getZ() + frameSize.getY() / 2);
         return new Vector2i(x, y);
     }
 
@@ -42,7 +42,7 @@ public class Camera3D {
         move(transformedVector);
     }
 
-    public void rotate(RotationAxis rotationAxis) { // TODO: combining 2+ axis rotations gives unexpected results
+    public void rotate(RotationAxis rotationAxis) {
         Vector3f rotationVector = getRotationVector(rotationAxis);
         SimpleMatrix rotationMatrix;
         if (rotationAxis == RotationAxis.NEGATIVE_X || rotationAxis == RotationAxis.POSITIVE_X) {
@@ -87,15 +87,14 @@ public class Camera3D {
                         )
                 )
         );
-        System.out.println(this);
     }
 
     private Vector3f getDirectionVector(Direction direction) {
         return switch (direction) {
             case LEFT -> new Vector3f(-MOVE_UNIT, 0f, 0f);
             case RIGHT -> new Vector3f(MOVE_UNIT, 0f, 0f);
-            case FORWARD -> new Vector3f(0f, 0f, MOVE_UNIT);
-            case BACKWARD -> new Vector3f(0f, 0f, -MOVE_UNIT);
+            case FORWARD -> new Vector3f(0f, 0f, -MOVE_UNIT);
+            case BACKWARD -> new Vector3f(0f, 0f, MOVE_UNIT);
             case UP -> new Vector3f(0f, MOVE_UNIT, 0f);
             case DOWN -> new Vector3f(0f, -MOVE_UNIT, 0f);
         };

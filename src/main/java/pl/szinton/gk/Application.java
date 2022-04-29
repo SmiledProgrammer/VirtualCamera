@@ -14,10 +14,12 @@ public class Application extends JFrame implements KeyListener {
 
     protected final Camera3D camera;
     protected final Scene scene;
+    protected boolean debug;
 
     public Application(Camera3D camera, Scene scene) {
         this.camera = camera;
         this.scene = scene;
+        this.debug = false;
         this.setTitle("Virtual Camera");
         this.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -44,23 +46,27 @@ public class Application extends JFrame implements KeyListener {
         g2d.setClip(0, 0, this.getWidth(), this.getHeight());
         g2d.setColor(new Color(200, 230, 255));
         g2d.fillRect(0, 0, this.getWidth(), this.getHeight());
+
         scene.render(g2d, camera);
-        g2d.setColor(Color.DARK_GRAY);
-        g2d.setFont(new Font("Dialog", Font.PLAIN, 22));
-        g2d.drawString(camera.toString(), 10, 90);
+
+        if (debug) {
+            g2d.setColor(Color.DARK_GRAY);
+            g2d.setFont(new Font("Dialog", Font.PLAIN, 22));
+            g2d.drawString(camera.toString(), 10, 90);
+        }
     }
 
     public static void main(String[] args) {
-        Vector3f initialPosition = new Vector3f(6f, 1f, -3f);
+        Vector3f initialPosition = new Vector3f(6f, 1f, 0f);
         Vector2i frameSize = new Vector2i(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 
         Camera3D camera = new Camera3D(frameSize, initialPosition);
 
         Scene scene = new Scene();
-        scene.addObject(Utils.createCuboidModel(new Vector3f(4f, 0f, 4f), new Vector3f(1f, 3f, 1f)));
-        scene.addObject(Utils.createCuboidModel(new Vector3f(4f, 0f, 8f), new Vector3f(1f, 2f, 1f)));
-        scene.addObject(Utils.createCuboidModel(new Vector3f(8f, 0f, 4f), new Vector3f(1f, 4f, 1f)));
-        scene.addObject(Utils.createCuboidModel(new Vector3f(8f, 0f, 8f), new Vector3f(1f, 3f, 1f)));
+        scene.addObject(Utils.createCuboidModel(new Vector3f(4f, 0f, -4f), new Vector3f(1f, 2f, 1f)));
+        scene.addObject(Utils.createCuboidModel(new Vector3f(4f, 0f, -8f), new Vector3f(1f, 4f, 1f)));
+        scene.addObject(Utils.createCuboidModel(new Vector3f(8f, 0f, -4f), new Vector3f(1f, 2f, 1f)));
+        scene.addObject(Utils.createCuboidModel(new Vector3f(8f, 0f, -8f), new Vector3f(1f, 4f, 1f)));
 
         Application app = new Application(camera, scene);
         app.run();
@@ -72,7 +78,6 @@ public class Application extends JFrame implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        this.repaint();
         switch (e.getKeyCode()) {
             case KeyEvent.VK_A -> camera.move(Direction.LEFT);
             case KeyEvent.VK_D -> camera.move(Direction.RIGHT);
@@ -88,7 +93,9 @@ public class Application extends JFrame implements KeyListener {
             case KeyEvent.VK_O -> camera.rotate(RotationAxis.POSITIVE_Z);
             case KeyEvent.VK_C -> camera.zoom(Zoom.IN);
             case KeyEvent.VK_V -> camera.zoom(Zoom.OUT);
+            case KeyEvent.VK_P -> debug = !debug;
         }
+        this.repaint();
     }
 
     @Override
