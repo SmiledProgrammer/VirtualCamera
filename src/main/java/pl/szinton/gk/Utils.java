@@ -7,11 +7,14 @@ import java.util.List;
 
 public class Utils {
 
-    public static SimpleMatrix multiplyExtendedVectorByMatrix(Vector3f vector, SimpleMatrix matrix) {
-        SimpleMatrix vectorMatrix = new SimpleMatrix(4, 1, true, new float[]{
+    public static SimpleMatrix extendedVector(Vector3f vector) {
+        return new SimpleMatrix(4, 1, true, new float[]{
                 vector.getX(), vector.getY(), vector.getZ(), 1f
         });
-        return matrix.mult(vectorMatrix);
+    }
+
+    public static SimpleMatrix multiplyExtendedVectorByMatrix(Vector3f vector, SimpleMatrix matrix) {
+        return matrix.mult(extendedVector(vector));
     }
 
     public static Vector3f getVectorFromMatrix(SimpleMatrix vectorMatrix) {

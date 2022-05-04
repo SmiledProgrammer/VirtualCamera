@@ -44,17 +44,7 @@ public class Camera3D {
 
     public void rotate(RotationAxis rotationAxis) {
         Vector3f rotationVector = getRotationVector(rotationAxis);
-        SimpleMatrix rotationMatrix;
-        if (rotationAxis == RotationAxis.NEGATIVE_X || rotationAxis == RotationAxis.POSITIVE_X) {
-            rotationMatrix = Matrix.rotationZ(-rotation.getZ()).mult(Matrix.rotationY(-rotation.getY()));
-        } else if (rotationAxis == RotationAxis.NEGATIVE_Y || rotationAxis == RotationAxis.POSITIVE_Y) {
-            rotationMatrix = Matrix.rotationX(-rotation.getX()).mult(Matrix.rotationZ(-rotation.getZ()));
-        } else {
-            rotationMatrix = Matrix.rotationY(-rotation.getY()).mult(Matrix.rotationX(-rotation.getX()));
-        }
-        Vector3f transformedVector = Utils.getVectorFromMatrix(
-                Utils.multiplyExtendedVectorByMatrix(rotationVector, rotationMatrix));
-        rotate(transformedVector);
+        rotate(rotationVector);
     }
 
     public void zoom(Zoom zoom) {
